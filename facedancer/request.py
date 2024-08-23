@@ -251,7 +251,8 @@ class USBControlRequest:
 
     def reply(self, data: bytes):
         """ Replies to the given request with a given set of bytes. """
-        self.device.send(endpoint_number=0, data=data)
+        reply_length = min(self.length, len(data))
+        self.device.send(endpoint_number=0, data=data[:reply_length])
 
 
     def acknowledge(self, *, blocking: bool = False):
